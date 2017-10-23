@@ -10,7 +10,7 @@ func index_handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func about_handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Dis is da good shit!")
+	fmt.Fprintf(w, "About da good shit!")
 	fmt.Println("Connection to about page!")
 }
 
