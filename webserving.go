@@ -14,8 +14,14 @@ func about_handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Connection to about page!")
 }
 
+func projects_handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "About da projects shit!")
+	fmt.Println("Connection to projects page!")
+}
+
 func main() {
 	http.HandleFunc("/", index_handler)
 	http.HandleFunc("/about", about_handler)
+	http.HandleFunc("/projects", projects_handler)
 	http.ListenAndServe(":8080", nil)
 }
