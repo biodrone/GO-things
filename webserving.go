@@ -6,6 +6,7 @@ import (
 
 func index_handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Dis is da good shit!")
+	fmt.Println("Connection to website!")
 }
 
 func main() {
