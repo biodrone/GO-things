@@ -33,6 +33,7 @@ func getIP(req *http.Request, landing string) (string, string, string, string) {
 	log.Printf("Port: %s\n", port)
 	log.Printf("Forwarded For: %s\n", forward)
 	log.Printf("Visited: %s\n", landing)
+	log.Printf("UA: %s\n", req.UserAgent())
 
 	return ip, port, forward, landing
 }
