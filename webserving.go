@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"log"
-	"strconv"
 	"os"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func getIP(req *http.Request, landing string) (string, string, string, string) {
@@ -24,9 +24,9 @@ func getIP(req *http.Request, landing string) (string, string, string, string) {
 		os.Exit(1)
 	}
 
-	//this will only be defined when site is accessed via non-anonymous proxy
-	//and takes precedence over RemoteAddr
-	//header.Get is case-insensitive
+	/*this will only be defined when site is accessed via non-anonymous proxy
+	/and takes precedence over RemoteAddr
+	header.Get is case-insensitive*/
 	forward := req.Header.Get("X-Forwarded-For")
 
 	log.Printf("IP: %s\n", ip)
@@ -39,8 +39,6 @@ func getIP(req *http.Request, landing string) (string, string, string, string) {
 }
 
 func main() {
-	srvPort := strconv.Itoa(3333)
-
 	//instantiate a new router
 	r := httprouter.New()
 
@@ -57,21 +55,15 @@ func main() {
 
 	//add a handler on /
 	r.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		// Simply write some test data for now
-		fmt.Fprint(w, "Welcome!\n")
-		_, _, _, _ = getIP(r, "/")
+		var ip string
+		ip, _, _, _ = getIP(r, "/")
+		fmt.Fprintf(w, "<h1>Welcome %s!</h1>Please to be enjoying your stayings!\n", ip)
 	})
 
-	l, err := net.Listen("tcp", "0.0.0.0:" + srvPort)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	//start the blocking server loop.
-	log.Fatal(http.Serve(l, r))
+	log.Fatal(http.Serve(autocert.NewListener("jjgo.init.tools"), r))
 	//mux := http.NewServeMux()
 	//mux.Handle("/", http.FileServer(http.Dir("./static")))
 	//http.ListenAndServe(":8080", mux)
 	//fmt.Println("Connection Handled")
-
 }
