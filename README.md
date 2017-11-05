@@ -6,6 +6,6 @@ Total Listing of Stuff\:
 
 - A Webserver (Now Serving Pages Over TLS)
 - Automatic Let'sEncrypt Certificates For Webserver
-- A database
+- Logging Client IP Info to a SQLite Database
 
 ___Authored By Ze Jacobs Bros___
