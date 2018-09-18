@@ -1,22 +1,21 @@
 package main
 
 import (
-	"net"
-	"net/http"
+	"database/sql"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
-	"database/sql"
-	_"github.com/mattn/go-sqlite3"
-	"log"
-	"os"
+	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/crypto/acme/autocert"
-	s "strings"
+	"log"
+	"net"
+	"net/http"
+	"os"
 	"time"
 )
 
 type IPLog struct {
 	ip, port, forward, landing, userAgent string
-	createdDate time.Time
+	createdDate                           time.Time
 }
 
 func getIP(req *http.Request, landing string) (string, string, string, string, string) {
@@ -48,7 +47,7 @@ func getIP(req *http.Request, landing string) (string, string, string, string, s
 	return ip, port, forward, landing, userAgent
 }
 
-func browserLookup(ua string) string {
+/*func browserLookup(ua string) string {
 	var browser string = "UNKNOWN!!!"
 	var android map[string]string
 	var ios map[string]string
@@ -95,9 +94,9 @@ func browserLookup(ua string) string {
 
 	return browser
 }
-
+*/
 func insertLogRecord(ip string, port string, forward string, landing string, userAgent string) {
-	database, err1:= sql.Open("sqlite3", "./LogDatabase.db")
+	database, err1 := sql.Open("sqlite3", "./LogDatabase.db")
 	if err1 != nil {
 		log.Fatal(err1)
 	}
@@ -110,7 +109,7 @@ func insertLogRecord(ip string, port string, forward string, landing string, use
 	database.Close()
 }
 
-func getLogRecords() []IPLog{
+func getLogRecords() []IPLog {
 	database, _ := sql.Open("sqlite3", "./LogDatabase.db")
 
 	rows, _ := database.Query("SELECT * FROM Logs")
@@ -168,13 +167,13 @@ func main() {
 		fmt.Fprintf(w, "<p>Forwarded for: %s</p>", forward)
 		fmt.Fprintf(w, "<p>You Are Visiting: %s</p>", landing)
 		fmt.Fprintf(w, "<p>Your User Agent is: %s</p>", userAgent)
-		fmt.Fprintf(w, "<p>This means you are using the %s browser</p>", browserLookup(userAgent))
+		fmt.Fprintf(w, "<p>This means you are using the %s browser</p>", "Not Sure Yet")
 	})
 
 	//add a handler on /
 	r.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		var ip string
-		ip, _, _, _, _= getIP(r, "/")
+		ip, _, _, _, _ = getIP(r, "/")
 		fmt.Fprintf(w, "<h1>Welcome %s!</h1>Please to be enjoying your stayings!\n", ip)
 	})
 
