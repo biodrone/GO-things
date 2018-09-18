@@ -114,8 +114,4 @@ func main() {
 
 	//start the blocking server loop.
 	log.Fatal(http.Serve(autocert.NewListener("init.tools"), r))
-	//mux := http.NewServeMux()
-	//mux.Handle("/", http.FileServer(http.Dir("./static")))
-	//http.ListenAndServe(":8080", mux)
-	//fmt.Println("Connection Handled")
 }
